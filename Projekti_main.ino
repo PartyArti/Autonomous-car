@@ -42,6 +42,7 @@ void Drive(){
 
   if (distance <= minimumRange){
     Suunta();
+    delay(50);
     break;
   }
  }
@@ -103,7 +104,7 @@ void Sensor(){
 
 void Suunta(){
     if (pos < 90) {digitalWrite(LED_BUILTIN, HIGH);}
-    if (pos > 90) {digitalWrite(LED_BUILTIN, LOW);}
+    if (pos > 90) {digitalWrite(LED_BUILTIN, HIGH);}
 }
 
 //MAIN LOOP-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
