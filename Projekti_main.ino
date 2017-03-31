@@ -1,20 +1,20 @@
+//Libraries
 #include <Servo.h>
 
-//Sensori
+//Sensor
 #define echoPin 10 // Echo Pin 
 #define trigPin 9 // Trigger Pin 
-#define jannite 8 
-#define maa 11 
+#define vcc 8 
+#define gnd 11 
 
 //Servo
-Servo myservo; 
+Servo myservo;
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 int pos = 0;
-int minimumRange = 15; // Sensorin minimietäisyys
-long duration, distance, distance1, distance2; // Aika, joka käytetään etäisyyden mittaamiseen 
-long aikaleima = 0; 
+int minimumRange = 15; // Minimum range needed 
+long duration, distance; // Duration used to calculate distance 
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -22,9 +22,8 @@ void setup() {
  Serial.begin (9600); 
  pinMode(trigPin, OUTPUT); 
  pinMode(echoPin, INPUT); 
- pinMode(jannite, OUTPUT) ; 
- pinMode(maa, OUTPUT) ; 
- pinMode(LED_BUILTIN, OUTPUT);
+ pinMode(vcc, OUTPUT) ; 
+ pinMode(gnd, OUTPUT) ; 
  myservo.attach(6);
  
 } 
@@ -41,49 +40,35 @@ void Drive(){
     Sensor();
 
   if (distance <= minimumRange){
-    Suunta();
-    delay(50);
+    Path();
     break;
   }
  }
 }
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void Alarm (){
-
-  myservo.write(pos=0);
-  delay(1000);
-  distance = distance1;
-  delay(100);
+void motorRight(){
   
-  myservo.write(pos=180);
-  delay(1000);
-  distance = distance2;
-  delay(100);
+}
 
-  myservo.write(pos=90);
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  if (distance1 > distance2){
-    
-  }
-  else{
-    
-  }
+void motorLeft(){
+  
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Sensor(){
-
-    /* The following trigPin/echoPin cycle is used to determine the 
- distance of the nearest object by bouncing soundwaves off of it. */ 
+  
+//The following trigPin/echoPin cycle is used to determine the distance of the nearest object by bouncing soundwaves off of it. 
   
  while(!Serial.available()==0) {} 
   
- digitalWrite(jannite, HIGH); 
+ digitalWrite(vcc, HIGH); 
  delayMicroseconds(2); 
   
- digitalWrite(maa, LOW); 
+ digitalWrite(gnd, LOW); 
  delayMicroseconds(2); 
   
  digitalWrite(trigPin, LOW); 
@@ -95,16 +80,21 @@ void Sensor(){
  digitalWrite(trigPin, LOW); 
  duration = pulseIn(echoPin, HIGH); 
   
- //Laskee etäisyyden (cm) äänennopeuden avulla 
+ //Calculates distance (cm) based on the speed of sound
  distance = duration/58.2; 
  
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void Suunta(){
-    if (pos < 90) {digitalWrite(LED_BUILTIN, HIGH);}
-    if (pos > 90) {digitalWrite(LED_BUILTIN, HIGH);}
+void Path(){
+    if (pos < 90) {
+      motorRight();
+      delay(500);
+      }
+    if (pos > 90) {
+      motorLeft;
+      delay(500);}
 }
 
 //MAIN LOOP-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
